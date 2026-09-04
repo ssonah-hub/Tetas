@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>سحب الأموال</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: #eef1f6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .card {
+            max-width: 480px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+            padding: 30px 24px 32px;
+            border: 1px solid #e4e8ef;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f0f4fc;
+            padding: 6px 16px 6px 12px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #1a2a4a;
+        }
+        .user-badge i {
+            color: #2a6df4;
+            font-size: 16px;
+        }
+        .status-online {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #e5f5ed;
+            color: #0d7a4a;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 5px 14px 5px 10px;
+            border-radius: 40px;
+        }
+        .status-online i {
+            font-size: 10px;
+            color: #13b86b;
+        }
+        .alert-box {
+            background: #fdf3f2;
+            border-radius: 16px;
+            padding: 16px 18px;
+            margin-bottom: 24px;
+            border-right: 4px solid #e5534b;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        .alert-box i {
+            color: #d93c34;
+            font-size: 20px;
+            margin-top: 2px;
+        }
+        .alert-text {
+            flex: 1;
+        }
+        .alert-text .title {
+            font-weight: 700;
+            color: #1f2a41;
+            font-size: 15px;
+            display: block;
+            margin-bottom: 3px;
+        }
+        .alert-text .sub {
+            font-size: 14px;
+            color: #4a5a72;
+            line-height: 1.5;
+        }
+        .alert-text .highlight {
+            font-weight: 700;
+            color: #1a2a4a;
+        }
+        .withdraw-amount-box {
+            background: #f7faff;
+            border-radius: 18px;
+            padding: 14px 18px;
+            margin-bottom: 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #e3eaf3;
+        }
+        .withdraw-amount-box .label {
+            font-size: 14px;
+            color: #3d506e;
+            font-weight: 500;
+        }
+        .withdraw-amount-box .amount {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0b1c3a;
+        }
+        .withdraw-amount-box .amount i {
+            font-size: 18px;
+            margin-left: 4px;
+            color: #3f5a82;
+        }
+        .info-row {
+            display: flex;
+            align-items: center;
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            border: 1px solid #e9edf4;
+        }
+        .info-row .icon {
+            width: 36px;
+            color: #3f5a82;
+            font-size: 16px;
+        }
+        .info-row .content {
+            flex: 1;
+        }
+        .info-row .label {
+            font-size: 12px;
+            color: #6b7b99;
+            display: block;
+            margin-bottom: 2px;
+        }
+        .info-row .value {
+            font-size: 16px;
+            font-weight: 500;
+            color: #141f33;
+        }
+        .fee-box {
+            display: flex;
+            justify-content: space-between;
+            background: #f2f6fe;
+            border-radius: 14px;
+            padding: 12px 18px;
+            margin: 16px 0 18px;
+            border: 1px dashed #b3c9f0;
+        }
+        .fee-box .label {
+            font-weight: 500;
+            color: #1b2e4e;
+        }
+        .fee-box .value {
+            font-weight: 700;
+            color: #0f2b55;
+        }
+        .input-group {
+            margin-bottom: 16px;
+        }
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #33456b;
+            margin-bottom: 6px;
+            margin-right: 6px;
+        }
+        .input-group .field {
+            display: flex;
+            align-items: center;
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 4px 16px 4px 12px;
+            border: 1px solid #e9edf4;
+            transition: 0.2s;
+        }
+        .input-group .field:focus-within {
+            border-color: #2a6df4;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(42, 109, 244, 0.08);
+        }
+        .input-group .field i {
+            width: 34px;
+            color: #6b7f9e;
+            font-size: 16px;
+        }
+        .input-group .field input {
+            border: none;
+            background: transparent;
+            padding: 12px 0;
+            width: 100%;
+            font-size: 15px;
+            outline: none;
+            color: #111b2e;
+        }
+        .input-group .field input::placeholder {
+            color: #aab7d0;
+            font-weight: 400;
+            font-size: 14px;
+        }
+        .btn-withdraw {
+            width: 100%;
+            background: #1b2e4e;
+            border: none;
+            border-radius: 50px;
+            padding: 16px;
+            color: white;
+            font-size: 17px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 6px 14px rgba(27, 46, 78, 0.15);
+            margin-top: 6px;
+        }
+        .btn-withdraw:hover {
+            background: #13233b;
+            transform: scale(1.01);
+        }
+        .btn-withdraw:active {
+            transform: scale(0.97);
+        }
+
+        /* نموذج الإدخال - يظهر عند الضغط على زر قسم السحب */
+        .input-form {
+            margin-top: 24px;
+            background: #f8faff;
+            border-radius: 20px;
+            padding: 20px;
+            border: 2px solid #2a6df4;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .input-form.show {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .input-form .form-title {
+            font-weight: 700;
+            font-size: 16px;
+            color: #1a2a4a;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .input-form .form-title i {
+            color: #2a6df4;
+        }
+        .input-form .form-group {
+            margin-bottom: 14px;
+        }
+        .input-form .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #33456b;
+            margin-bottom: 4px;
+        }
+        .input-form .form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #dce2ec;
+            border-radius: 12px;
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s;
+            background: #ffffff;
+        }
+        .input-form .form-group input:focus {
+            border-color: #2a6df4;
+            box-shadow: 0 0 0 3px rgba(42, 109, 244, 0.08);
+        }
+        .btn-submit {
+            width: 100%;
+            background: #2a6df4;
+            border: none;
+            border-radius: 50px;
+            padding: 14px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 4px;
+        }
+        .btn-submit:hover {
+            background: #1a5ad4;
+        }
+        .btn-submit:active {
+            transform: scale(0.97);
+        }
+        .btn-close-form {
+            background: transparent;
+            border: none;
+            color: #8b9bb8;
+            font-size: 13px;
+            cursor: pointer;
+            margin-top: 10px;
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+        .btn-close-form:hover {
+            color: #4a5a72;
+        }
+
+        .footer-note {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #8b9bb8;
+            text-align: center;
+            border-top: 1px solid #eef2f8;
+            padding-top: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <!-- رأس -->
+        <div class="header">
+            <div class="user-badge">
+                <i class="fas fa-user-circle"></i> MR/ MOHAMED SADEK
+            </div>
+            <div class="status-online">
+                <i class="fas fa-circle"></i> متصل
+            </div>
+        </div>
+
+        <!-- رسالة الخطأ -->
+        <div class="alert-box">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div class="alert-text">
+                <span class="title">عذرا عملية السحب غير مكتملة</span>
+                <span class="sub">
+                    إتمام سحب مبلغ <span class="highlight" id="displayAmount">33,600</span> ج.م
+                    <br />برجاء دفع الضريبة أو تذاكر عملية السحب
+                </span>
+            </div>
+        </div>
+
+        <!-- مبلغ السحب -->
+        <div class="withdraw-amount-box">
+            <span class="label"><i class="fas fa-arrow-up-right-from-square" style="margin-left: 6px;"></i> مبلغ السحب</span>
+            <span class="amount" id="withdrawAmount">33,600 <i class="fas fa-pound-sign"></i></span>
+        </div>
+
+        <!-- اسم العميل -->
+        <div class="info-row">
+            <div class="icon"><i class="fas fa-user"></i></div>
+            <div class="content">
+                <span class="label">اسم العميل</span>
+                <span class="value" id="clientName">أحمد محمد مسعود</span>
+            </div>
+        </div>
+
+        <!-- رقم الهاتف -->
+        <div class="info-row">
+            <div class="icon"><i class="fas fa-phone-alt"></i></div>
+            <div class="content">
+                <span class="label">رقم الهاتف</span>
+                <span class="value" id="clientPhone">01008988601</span>
+            </div>
+        </div>
+
+        <!-- رسوم الباقة -->
+        <div class="fee-box">
+            <span class="label"><i class="fas fa-ticket-alt" style="margin-left: 8px;"></i> رسوم الباقة</span>
+            <span class="value" id="feeAmount">2,750 ج.م</span>
+        </div>
+
+        <!-- رقم الهاتف الذي سدد فيه الرسوم -->
+        <div class="input-group">
+            <label for="phonePaid"><i class="fas fa-credit-card" style="margin-left: 6px;"></i> رقم الهاتف الذي سدد فيه الرسوم</label>
+            <div class="field">
+                <i class="fas fa-mobile-alt"></i>
+                <input type="text" id="phonePaid" placeholder="ادخل الرقم" />
+            </div>
+        </div>
+
+        <!-- زر قسم السحب -->
+        <button class="btn-withdraw" id="showFormBtn">
+            <i class="fas fa-hand-holding-usd"></i> قسم السحب
+        </button>
+
+        <!-- نموذج الإدخال (يظهر عند الضغط على زر قسم السحب) -->
+        <div class="input-form" id="inputForm">
+            <div class="form-title">
+                <i class="fas fa-edit"></i> تعديل بيانات السحب
+            </div>
+            
+            <div class="form-group">
+                <label>اسم العميل</label>
+                <input type="text" id="inputName" placeholder="أدخل اسم العميل" value="أحمد محمد مسعود" />
+            </div>
+            
+            <div class="form-group">
+                <label>رقم الهاتف</label>
+                <input type="text" id="inputPhone" placeholder="أدخل رقم الهاتف" value="01008988601" />
+            </div>
+            
+            <div class="form-group">
+                <label>مبلغ السحب (ج.م)</label>
+                <input type="number" id="inputAmount" placeholder="أدخل المبلغ" value="33600" />
+            </div>
+            
+            <div class="form-group">
+                <label>رسوم الباقة (ج.م)</label>
+                <input type="number" id="inputFee" placeholder="أدخل الرسوم" value="2750" />
+            </div>
+            
+            <button class="btn-submit" id="submitDataBtn">
+                <i class="fas fa-check"></i> تم
+            </button>
+            
+            <button class="btn-close-form" id="closeFormBtn">
+                <i class="fas fa-times"></i> إلغاء
+            </button>
+        </div>
+
+        <div class="footer-note">
+            <i class="fas fa-lock" style="opacity:0.5;"></i> محاكاة لسحب الأموال · للتجربة فقط
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // عناصر الصفحة
+            const showFormBtn = document.getElementById('showFormBtn');
+            const inputForm = document.getElementById('inputForm');
+            const closeFormBtn = document.getElementById('closeFormBtn');
+            const submitDataBtn = document.getElementById('submitDataBtn');
+            
+            // حقول الإدخال
+            const inputName = document.getElementById('inputName');
+            const inputPhone = document.getElementById('inputPhone');
+            const inputAmount = document.getElementById('inputAmount');
+            const inputFee = document.getElementById('inputFee');
+            
+            // عناصر العرض
+            const clientName = document.getElementById('clientName');
+            const clientPhone = document.getElementById('clientPhone');
+            const withdrawAmount = document.getElementById('withdrawAmount');
+            const displayAmount = document.getElementById('displayAmount');
+            const feeAmount = document.getElementById('feeAmount');
+            const phonePaid = document.getElementById('phonePaid');
+
+            // إظهار نموذج الإدخال
+            showFormBtn.addEventListener('click', function() {
+                inputForm.classList.add('show');
+                // ملء الحقول بالقيم الحالية
+                inputName.value = clientName.textContent.trim();
+                inputPhone.value = clientPhone.textContent.trim();
+                const currentAmount = withdrawAmount.textContent.replace(' ج.م', '').replace(/,/g, '').trim();
+                inputAmount.value = currentAmount;
+                const currentFee = feeAmount.textContent.replace(' ج.م', '').replace(/,/g, '').trim();
+                inputFee.value = currentFee;
+            });
+
+            // إغلاق النموذج
+            closeFormBtn.addEventListener('click', function() {
+                inputForm.classList.remove('show');
+            });
+
+            // تحديث البيانات عند الضغط على "تم"
+            submitDataBtn.addEventListener('click', function() {
+                // التحقق من الحقول
+                const name = inputName.value.trim() || 'أحمد محمد مسعود';
+                const phone = inputPhone.value.trim() || '01008988601';
+                const amount = inputAmount.value.trim() || '33600';
+                const fee = inputFee.value.trim() || '2750';
+
+                // تحديث اسم العميل
+                clientName.textContent = name;
+                
+                // تحديث رقم الهاتف
+                clientPhone.textContent = phone;
+                
+                // تحديث مبلغ السحب
+                const formattedAmount = parseInt(amount).toLocaleString('en-US');
+                withdrawAmount.innerHTML = formattedAmount + ' <i class="fas fa-pound-sign"></i>';
+                displayAmount.textContent = formattedAmount;
+                
+                // تحديث رسوم الباقة
+                const formattedFee = parseInt(fee).toLocaleString('en-US');
+                feeAmount.textContent = formattedFee + ' ج.م';
+                
+                // إغلاق النموذج
+                inputForm.classList.remove('show');
+                
+                // رسالة تأكيد
+                alert('✅ تم تحديث البيانات بنجاح!');
+            });
+
+            // إغلاق النموذج بالضغط خارجها (اختياري)
+            document.addEventListener('click', function(e) {
+                if (inputForm.classList.contains('show')) {
+                    if (!inputForm.contains(e.target) && e.target !== showFormBtn) {
+                        inputForm.classList.remove('show');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
